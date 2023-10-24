@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>market</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">TOKO ACEL</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">LOG IN</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">LOG OUT</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-3">
+    <!-- Button trigger modal -->
+    <a href="/shop/<%= id %>">
+      <i class="fa-solid fa-shop" style="color: #7894c4;"></i>
+    </a>
+    <% if(user){ %>
+      <%= user.saldo%>
+        <% if(user.role==1){ %>
+          <a href="/transaksi"><i class="fa-solid fa-cart-shopping" style="color: #d02525;"></i></a>
+          <% } %>
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Input Barang
+            </button>
+
+            <% } %>
+
+
+              <!-- tabel -->
+              <div class="row">
+                <div class="col-md-6">
+                  <table border="1" class="table table-dark table-striped">
+                    <tr>
+                      <th>Id</th>
+                      <th>nama barang</th>
+                      <th>harga barang</th>
+                      <th>stock barang</th>
+                      <th>Photo</th>
+                      <th>Pilih</th>
+                      <th>Action</th>
+                    </tr>
+                    <% for(let a of produk){ %>
+                      <tr>
+                        <td>
+                          <%= a.id_barang %>
+                        </td>
+                        <td>
+                          <%= a.Nama_Barang %>
+                        </td>
+                        <td>
+                          <%= uang(a.harga) %>
+                        </td>
+                        <td>
+                          <%= a.new_stock %>
+                        </td>
+                        <td>
+                          <%= a.image %>
+                        </td>
+                        <td>
+                          <% if (a.new_stock <=0) { %>
+                            <div style="color: red">Stock habis</div>
+                            <% }else{ %>
+
+                              <!-- Button trigger modal -->
+                              <button type="button" class="badge bg-success" data-bs-toggle="modal"
+                                onclick="barang('<%= a.id_barang %>','<%= a.harga %>','<%= a.new_stock %>')"
+                                data-bs-target="#modalBarang">
+                                pilih
+                              </button>
+                              <% } %>
+                        </td>
+                        <td>
+                          <% if(user){ %>
+                            <% if(user.role==1){ %>
+                              <a href="/hapusBar/<%= a.id_barang %>" onclick="return confirm('Yakin deck ?')"
+                                class="badge bg-danger">Hapus</a>
+                              <% } %>
+                                <% } %>
+
+                        </td>
+                      </tr>
+                      <% } %>
+                  </table>
+                </div>
+                <!-- Tabel End -->
+
+                <%- include('modal.ejs') %>
+                  <script src="/script.js"></script>
+</body>
+
+</html>
